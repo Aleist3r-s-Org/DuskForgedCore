@@ -9950,6 +9950,8 @@ bool Unit::HandleProcTriggerSpell(Unit* victim, uint32 damage, AuraEffect* trigg
         case 52910:
         // Honor Among Thieves
         case 51699:
+        // Turn the Tables but DH
+        case 1410053:
             {
                 target = triggeredByAura->GetBase()->GetCaster();
                 if (!target)
@@ -20532,29 +20534,29 @@ void Unit::JumpTo(float speedXY, float speedZ, bool forward, int32 directional)
 
     if (directional != 0 && forward)
     {
-        if (HasUnitMovementFlag(MOVEMENTFLAG_FORWARD) || HasUnitMovementFlag(MOVEMENTFLAG_PENDING_FORWARD))
+        if (HasUnitMovementFlag(MOVEMENTFLAG_FORWARD))
         {
             angle = 0;
 
-            if (HasUnitMovementFlag(MOVEMENTFLAG_STRAFE_LEFT) || HasUnitMovementFlag(MOVEMENTFLAG_PENDING_STRAFE_LEFT))
+            if (HasUnitMovementFlag(MOVEMENTFLAG_STRAFE_LEFT))
                 angle = M_PI * 0.25f;
-            else if (HasUnitMovementFlag(MOVEMENTFLAG_STRAFE_RIGHT) || HasUnitMovementFlag(MOVEMENTFLAG_PENDING_STRAFE_RIGHT))
+            else if (HasUnitMovementFlag(MOVEMENTFLAG_STRAFE_RIGHT))
                 angle = M_PI * 1.75f;
         }
-        else if (HasUnitMovementFlag(MOVEMENTFLAG_BACKWARD) || HasUnitMovementFlag(MOVEMENTFLAG_PENDING_BACKWARD))
+        else if (HasUnitMovementFlag(MOVEMENTFLAG_BACKWARD))
         {
             angle = M_PI;
 
-            if (HasUnitMovementFlag(MOVEMENTFLAG_STRAFE_LEFT) || HasUnitMovementFlag(MOVEMENTFLAG_PENDING_STRAFE_LEFT))
+            if (HasUnitMovementFlag(MOVEMENTFLAG_STRAFE_LEFT))
                 angle = M_PI * 0.75f;
-            else if (HasUnitMovementFlag(MOVEMENTFLAG_STRAFE_RIGHT) || HasUnitMovementFlag(MOVEMENTFLAG_PENDING_STRAFE_RIGHT))
+            else if (HasUnitMovementFlag(MOVEMENTFLAG_STRAFE_RIGHT))
                 angle = M_PI * 1.25f;
         }
-        else if (HasUnitMovementFlag(MOVEMENTFLAG_STRAFE_LEFT) || HasUnitMovementFlag(MOVEMENTFLAG_PENDING_STRAFE_LEFT))
+        else if (HasUnitMovementFlag(MOVEMENTFLAG_STRAFE_LEFT))
         {
             angle = M_PI * 0.5f;
         }
-        else if (HasUnitMovementFlag(MOVEMENTFLAG_STRAFE_RIGHT) || HasUnitMovementFlag(MOVEMENTFLAG_PENDING_STRAFE_RIGHT))
+        else if (HasUnitMovementFlag(MOVEMENTFLAG_STRAFE_RIGHT))
         {
             angle = M_PI * 1.5f;
         }

@@ -1876,6 +1876,22 @@ void Player::Regenerate(Powers power)
 
     float addvalue = 0.0f;
 
+    // Aleist3r: fuckery related to Demon Hunter's Vanity talent - pure pain
+    if (getClass() == CLASS_DEMON_HUNTER)
+    {
+        if (HasAura(1410119) && !HasAura(1410133) && GetPower(POWER_RUNIC_POWER) <= 500)
+        {
+            CastSpell(this, 1410133, true);
+            SetPower(POWER_RUNIC_POWER, 500);
+            return;
+        }
+        else if (HasAura(1410133) && GetPower(POWER_RUNIC_POWER) > 500)
+        {
+            RemoveAura(1410133);
+            return;
+        }
+    }
+
     switch (power)
     {
         case POWER_MANA:

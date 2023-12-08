@@ -4512,7 +4512,7 @@ void SpellMgr::LoadSpellInfoCorrections()
     });
 
     // Turn the Tables
-    ApplySpellFix({ 51627, 51628, 51629 }, [](SpellInfo* spellInfo)
+    ApplySpellFix({ 51627, 51628, 51629, 1410052 }, [](SpellInfo* spellInfo)
     {
         spellInfo->AttributesEx3 |= SPELL_ATTR3_DOT_STACKING_RULE;
     });

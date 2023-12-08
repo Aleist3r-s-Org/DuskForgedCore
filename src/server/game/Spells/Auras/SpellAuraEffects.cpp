@@ -2797,6 +2797,19 @@ void AuraEffect::HandleAuraTransform(AuraApplication const* aurApp, uint8 mode, 
                     case 75531:
                         target->SetDisplayId(target->getGender() == GENDER_MALE ? 31654 : 31655);
                         break;
+                    // Demon Hunter - Metamorphosis
+                    case 1410108:
+                        switch (target->getRace())
+                        {
+                        case RACE_BLOODELF:
+                            target->SetDisplayId(target->getGender() == GENDER_MALE ? 27036 : 4162);
+                            break;
+                        case RACE_NIGHTELF:
+                            target->SetDisplayId(target->getGender() == GENDER_MALE ? 27036 : 4162);
+                            break;
+                        default:
+                            break;
+                        }
                     default:
                         break;
                 }
@@ -7769,7 +7782,9 @@ void AuraEffect::HandleAuraModTriggerSpellPowerPercent(AuraApplication const* au
         int32 amount = GetAmount();
 
         if ((GetMiscValueB() == 0 && (float)(caster->GetPowerPct(Powers(power))) < amount)
-            || (GetMiscValueB() == 1 && (float)(caster->GetPowerPct(Powers(power))) > amount))
+            || (GetMiscValueB() == 1 && (float)(caster->GetPowerPct(Powers(power))) <= amount)
+            || (GetMiscValueB() == 2 && (float)(caster->GetPowerPct(Powers(power))) > amount)
+            || (GetMiscValueB() == 3 && (float)(caster->GetPowerPct(Powers(power))) >= amount))
         {
             if (!caster->HasAura(GetTriggerSpell()))
                 caster->AddAura(GetTriggerSpell(), caster);
