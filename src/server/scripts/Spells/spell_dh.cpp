@@ -150,7 +150,7 @@ struct at_dh_sigil_of_combustion : AreaTriggerAI
 };
 
 // 1410003 - Sigil of Flame
-struct at_dh_sigil_of_flame : AreaTriggerAI
+struct at_dh_sigil_of_flame : public AreaTriggerAI
 {
     at_dh_sigil_of_flame(AreaTrigger* areatrigger) : AreaTriggerAI(areatrigger) { }
 
