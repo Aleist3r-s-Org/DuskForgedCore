@@ -409,6 +409,9 @@ pAuraEffectHandler AuraEffectHandler[TOTAL_AURAS] =
     &AuraEffect::HandleNoImmediateEffect,                         //345 SPELL_AURA_MOD_REMOVE_AURA
     &AuraEffect::HandleNoImmediateEffect,                         //346 SPELL_AURA_CAN_DOUBLE_JUMP
     &AuraEffect::HandleNoImmediateEffect,                         //347 SPELL_AURA_CAN_GLIDE
+    &AuraEffect::HandleNoImmediateEffect,                         //348 SPELL_AURA_MOD_SCHOOL_MASK_HEALING_FROM_CASTER
+    &AuraEffect::HandleNoImmediateEffect,                         //349 SPELL_AURA_MOD_MONEY_GAIN
+    &AuraEffect::HandleNoImmediateEffect,                         //350 SPELL_AURA_MOD_TAXI_FLIGHT_SPEED
 };
 
 AuraEffect::AuraEffect(Aura* base, uint8 effIndex, int32* baseAmount, Unit* caster):
