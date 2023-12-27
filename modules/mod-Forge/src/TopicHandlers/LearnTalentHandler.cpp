@@ -22,7 +22,6 @@ public:
         if (iam.message.empty()) // talentType|tabId?rank~rank~rank;*
             return;
 
-        ForgeCharacterSpec* spec;
         if (fc->TryGetCharacterActiveSpec(iam.player, spec)) {
             if (iam.message.size() > 3) {
                 _treeMetaData.clear();
@@ -122,7 +121,6 @@ public:
                                 iam.player->SendPlaySpellVisual(179); // 53 SpellCastDirected
                                 iam.player->SendPlaySpellImpact(iam.player->GetGUID(), 362); // 113 EmoteSalute
                             } else {
-                                iam.player->SendForgeUIMsg(ForgeTopic::LEARN_TALENT_ERROR, "Malformed talent string.");
                                 return;
                             }
                         }
@@ -151,8 +149,7 @@ public:
     bool VerifyFlatTable(Player* player, ForgeCharacterPoint* points, ForgeTalentTab* tab) {
         toLearn.clear();
         unlocked.clear();
-        ForgeCharacterSpec* spec;
-        if (fc->TryGetCharacterActiveSpec(player, spec) && tab->ClassMask == player->getClassMask()) {
+        if (tab->ClassMask == player->getClassMask()) {
             std::unordered_map <uint32 /*tabId*/, uint8 /*spent*/> spend;
                 for (auto tab : _simplifiedTreeMap) {
                     ForgeTalentTab* specTab;
@@ -175,22 +172,32 @@ public:
                                                     if (col.second > 0) {
                                                         if (choiceNode) {
                                                             uint32 choiceId = fc->GetChoiceNodeFromindex(col.second);
-                                                            if (!choiceId)
+                                                            if (!choiceId) {
+                                                                player->SendForgeUIMsg(ForgeTopic::LEARN_TALENT_ERROR, "Unknown choice noce received.");
                                                                 return false;
+                                                            }
                                                         }
-                                                        else if (talent->Ranks.size() < col.second || col.second < 0)
+                                                        else if (talent->Ranks.size() < col.second || col.second < 0) {
+                                                            player->SendForgeUIMsg(ForgeTopic::LEARN_TALENT_ERROR, "Rank value not allowed.");
                                                             return false;
+                                                        }
 
                                                         if (!talent->Prereqs.empty())
-                                                            if (std::find(unlocked.begin(), unlocked.end(), node->spellId) == unlocked.end())
+                                                            if (std::find(unlocked.begin(), unlocked.end(), node->spellId) == unlocked.end()) {
+                                                                player->SendForgeUIMsg(ForgeTopic::LEARN_TALENT_ERROR, "Missing prerequisite.");
                                                                 return false;
+                                                            }
 
-                                                        if (talent->RequiredLevel > player->getLevel() || node->pointReq > spend[tab.first])
+                                                        if (talent->RequiredLevel > player->getLevel() || node->pointReq > spend[tab.first]) {
+                                                            player->SendForgeUIMsg(ForgeTopic::LEARN_TALENT_ERROR, "Level requirement not met.");
                                                             return false;
+                                                        }
 
                                                         spend[tab.first] += choiceNode ? talent->RankCost : col.second * talent->RankCost;
-                                                        if (spend[specTab->Id] > points->Max)
+                                                        if (spend[specTab->Id] > points->Max) {
+                                                            player->SendForgeUIMsg(ForgeTopic::LEARN_TALENT_ERROR, "Point requirement not met.");
                                                             return false;
+                                                        }
 
                                                         for (auto unlock : node->unlocks)
                                                             unlocked.push_back(unlock->spellId);
@@ -220,6 +227,7 @@ private:
     ForgeCommonMessage* cm;
     ForgeCache* fc;
 
+    ForgeCharacterSpec* spec;
     const uint8 META_PREFIX = 3;
 
     const std::string base64_char = "|ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"; // | is to offset string to base 1
