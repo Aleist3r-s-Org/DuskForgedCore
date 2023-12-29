@@ -475,6 +475,7 @@ public:
         spec->Description = "Skill Specilization";
         spec->Visability = SpecVisibility::PRIVATE;
         spec->SpellIconId = 133743;
+        spec->CharacterSpecTabId = GetFirstSpec(player);
 
         player->SetSpecsCount(num);
 
@@ -959,6 +960,7 @@ public:
 
     const uint8 LOADOUT_NAME_MAX = 64;
     const uint8 META_PREFIX = 3;
+    const uint8 MAX_LOADOUTS_PER_SPEC = 7;
 
     struct PlayerLoadout {
         bool active;
@@ -970,6 +972,41 @@ public:
     // hater: player loadout storage
     std::unordered_map<uint32 /*guid*/, std::unordered_map<uint32 /*tabId*/, std::unordered_map<uint8 /*id*/, PlayerLoadout*>>> _playerTalentLoadouts;
     std::unordered_map<uint32 /*guid*/,PlayerLoadout*> _playerActiveTalentLoadouts;
+
+    std::unordered_map<uint32 /*class*/, uint32 /*spec*/> _playerClassFirstSpec;
+
+    void AddDefaultLoadout(Player* player)
+    {
+        std::string loadout = "A";
+        auto find = _playerClassFirstSpec[player->getClass()];
+        loadout += base64_char.substr(find, 1);
+        loadout += base64_char.substr(player->getClass(), 1);
+
+        auto classMap = _cacheClassNodeToSpell[player->getClass()];
+        for (int i = 1; i <= classMap.size(); i++)
+            loadout += base64_char.substr(1, 1);
+
+        auto specMap = _cacheSpecNodeToSpell[find];
+        for (int i = 1; i <= specMap.size(); i++) {
+            loadout += base64_char.substr(1, 1);
+        }
+
+        auto guid = player->GetGUID().GetCounter();
+
+        PlayerLoadout* plo = new PlayerLoadout();
+        plo->active = true;
+        plo->id = 1;
+        plo->name = "Default";
+        plo->tabId = find;
+        plo->talentString = loadout;
+
+        _playerTalentLoadouts[guid][find][plo->id] = plo;
+        _playerActiveTalentLoadouts[guid] = plo;
+
+        CharacterDatabase.Execute("insert into `forge_character_talent_loadouts` (`guid`, `id`, `tabId`, `name`, `talentString`, `active`) values ({}, {}, {}, {}, {}, {})",
+            guid, plo->id, find, plo->name, loadout, true);
+    }
+
 private:
     std::unordered_map<ObjectGuid, uint32> CharacterActiveSpecs;
     std::unordered_map<std::string, uint32> CONFIG;
@@ -1288,6 +1325,7 @@ private:
 
         _cacheClassNodeToClassTree.clear();
         _cacheClassNodeToSpell.clear();
+        _playerClassFirstSpec.clear();
 
         do
         {
@@ -1318,6 +1356,14 @@ private:
 
                     if (classBit != 0 || newTab->ClassMask == 0)
                     {
+                        auto firstSpec = _playerClassFirstSpec.find(classBit);
+                        if (firstSpec != _playerClassFirstSpec.end()) {
+                            if (newTab->Id < firstSpec->second)
+                                _playerClassFirstSpec[classBit] = newTab->Id;
+                        }
+                        else 
+                            _playerClassFirstSpec[classBit] = newTab->Id;
+
                         RaceAndClassTabMap[race.first][wowClass.first].insert(newTab->Id);
                         SpellToTalentTabMap[newTab->SpellIconId] = newTab->Id;
                         TalentTabToSpellMap[newTab->Id] = newTab->SpellIconId;
@@ -1874,6 +1920,11 @@ private:
             _playerTalentLoadouts[guid][tabId][id] = plo;
             _playerActiveTalentLoadouts[guid] = plo;
         } while (loadouts->NextRow());
+    }
+
+    uint32 GetFirstSpec(Player* player)
+    {
+        
     }
 };
 
