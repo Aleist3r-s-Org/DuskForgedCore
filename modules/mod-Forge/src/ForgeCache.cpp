@@ -924,7 +924,7 @@ public:
     void ForgetTalents(Player* player, ForgeCharacterSpec* spec, CharacterPointType pointType) {
         std::list<ForgeTalentTab*> tabs;
         if (TryGetForgeTalentTabs(player, pointType, tabs))
-            for (auto* tab : tabs)
+            for (auto* tab : tabs) {
                 for (auto spell : tab->Talents) {
                     if (spell.second->nodeType == NodeType::CHOICE) {
                         for (auto choice : _choiceNodesRev)
@@ -945,9 +945,40 @@ public:
                     if (talent != spec->Talents[tab->Id].end())
                         talent->second->CurrentRank = 0;
                 }
+                spec->PointsSpent[tab->Id] = 0;
+            }
         ForgeCharacterPoint* fcp = GetSpecPoints(player, pointType, spec->Id);
-        ForgeCharacterPoint* baseFcp = GetCommonCharacterPoint(player, pointType);
-        fcp->Sum = baseFcp->Sum;
+
+        auto amount = 0;
+        auto level = player->getLevel();
+        if (level > 10)
+            level -= 9;
+
+        switch (pointType) {
+        case CharacterPointType::TALENT_TREE:
+            if (level > 1) {
+                int div = level / 2;
+               amount = div;
+            }
+            else
+                if (level % 2)
+                    amount = 1;
+            break;
+        case CharacterPointType::CLASS_TREE:
+            if (level > 1) {
+                int rem = level % 2;
+                int div = level / 2;
+                if (rem)
+                    div += 1;
+
+                amount = div;
+            }
+            break;
+        default:
+            break;
+        }
+
+        fcp->Sum = amount;
 
         UpdateCharPoints(player, fcp);
     }
@@ -977,34 +1008,38 @@ public:
 
     void AddDefaultLoadout(Player* player)
     {
-        std::string loadout = "A";
-        auto find = _playerClassFirstSpec[player->getClass()];
-        loadout += base64_char.substr(find, 1);
-        loadout += base64_char.substr(player->getClass(), 1);
+        std::list<ForgeTalentTab*> tabs;
+        if (TryGetForgeTalentTabs(player, CharacterPointType::TALENT_TREE, tabs)) {
+            for (auto tab : tabs) {
+                std::string loadout = "A";
+                loadout += base64_char.substr(tab->Id, 1);
+                loadout += base64_char.substr(player->getClass(), 1);
 
-        auto classMap = _cacheClassNodeToSpell[player->getClass()];
-        for (int i = 1; i <= classMap.size(); i++)
-            loadout += base64_char.substr(1, 1);
+                auto classMap = _cacheClassNodeToSpell[player->getClass()];
+                for (int i = 1; i <= classMap.size(); i++)
+                    loadout += base64_char.substr(1, 1);
 
-        auto specMap = _cacheSpecNodeToSpell[find];
-        for (int i = 1; i <= specMap.size(); i++) {
-            loadout += base64_char.substr(1, 1);
+                auto specMap = _cacheSpecNodeToSpell[tab->Id];
+                for (int i = 1; i <= specMap.size(); i++) {
+                    loadout += base64_char.substr(1, 1);
+                }
+
+                auto guid = player->GetGUID().GetCounter();
+
+                PlayerLoadout* plo = new PlayerLoadout();
+                plo->active = true;
+                plo->id = 1;
+                plo->name = "Default";
+                plo->tabId = tab->Id;
+                plo->talentString = loadout;
+
+                _playerTalentLoadouts[guid][tab->Id][plo->id] = plo;
+                _playerActiveTalentLoadouts[guid] = plo;
+
+                CharacterDatabase.Execute("insert into `forge_character_talent_loadouts` (`guid`, `id`, `tabId`, `name`, `talentString`, `active`) values ({}, {}, {}, '{}', '{}', {})",
+                    guid, plo->id, tab->Id, plo->name, loadout, true);
+            }
         }
-
-        auto guid = player->GetGUID().GetCounter();
-
-        PlayerLoadout* plo = new PlayerLoadout();
-        plo->active = true;
-        plo->id = 1;
-        plo->name = "Default";
-        plo->tabId = find;
-        plo->talentString = loadout;
-
-        _playerTalentLoadouts[guid][find][plo->id] = plo;
-        _playerActiveTalentLoadouts[guid] = plo;
-
-        CharacterDatabase.Execute("insert into `forge_character_talent_loadouts` (`guid`, `id`, `tabId`, `name`, `talentString`, `active`) values ({}, {}, {}, '{}', '{}', {})",
-            guid, plo->id, find, plo->name, loadout, true);
     }
 
 private:
