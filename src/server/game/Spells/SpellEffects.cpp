@@ -824,6 +824,32 @@ void Spell::EffectTriggerSpell(SpellEffIndex effIndex)
 
     uint32 triggered_spell_id = m_spellInfo->Effects[effIndex].TriggerSpell;
 
+    // Overrides
+    switch (m_spellInfo->SpellFamilyName)
+    {
+        case SPELLFAMILY_DEMONHUNTER:
+        {
+            if (m_caster->HasAura(1420002))
+            {
+                switch (triggered_spell_id)
+                {
+                case 1410068:
+                    triggered_spell_id = 1420004;
+                    break;
+                case 1410069:
+                    triggered_spell_id = 1420005;
+                    break;
+                case 1420038:
+                    triggered_spell_id = 1420041;
+                    break;
+                case 1420040:
+                    triggered_spell_id = 1420042;
+                    break;
+                }
+            }
+        }
+    }
+
     /// @todo: move those to spell scripts
     if (m_spellInfo->Effects[effIndex].Effect == SPELL_EFFECT_TRIGGER_SPELL
             && effectHandleMode == SPELL_EFFECT_HANDLE_LAUNCH_TARGET)

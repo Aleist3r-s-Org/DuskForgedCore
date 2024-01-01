@@ -18,12 +18,17 @@ enum DemonHunterSpells
     SPELL_DH_AURA_OF_FLAME_TALENT           = 1410043,
     SPELL_DH_AURA_OF_PAIN_BUFF              = 1410042,
     SPELL_DH_AURA_OF_PAIN_TALENT            = 1410041,
+    SPELL_DH_BACKDRAFT_IMMOLATION_AURA      = 1420088,
     SPELL_DH_BACKDRAFT_TALENT               = 1420019,
+    SPELL_DH_BURNING_HATRED_PROC            = 1420023,
+    SPELL_DH_BURNING_HATRED_TALENT          = 1420021,
     SPELL_DH_CHAOS_NOVA_PROC                = 1410036,
     SPELL_DH_CHAOS_NOVA_SPELL               = 1410035,
     SPELL_DH_CHAOS_STRIKE_MH                = 1410068,
     SPELL_DH_CHAOS_STRIKE_OH                = 1410069,
     SPELL_DH_CHAOS_STRIKE_SPELL             = 1410067,
+    SPELL_DH_CRITICAL_CHAOS_AURA_PROC       = 1420029,
+    SPELL_DH_CRITICAL_CHAOS_TALENT          = 1420028,
     SPELL_DH_DARKNESS_SPELL                 = 1410051,
     SPELL_DH_DARK_NIGHT_BUFF                = 1410057,
     SPELL_DH_DARK_NIGHT_TALENT              = 1410056,
@@ -35,8 +40,13 @@ enum DemonHunterSpells
     SPELL_DH_DOUBLE_JUMP_DIRECTIONAL        = 1410114,
     SPELL_DH_DOUBLE_JUMP_STATIONARY         = 1410113,
     SPELL_DH_DOUBLE_JUMP_TRIGGER            = 1410112,
+    SPELL_DH_FAMINE_DEBUFF                  = 1430026,
+    SPELL_DH_FAMINE_TALENT                  = 1430025,
     SPELL_DH_FEL_RUSH_AIR                   = 1410125,
     SPELL_DH_FEL_RUSH_GROUND                = 1410126,
+    SPELL_DH_FRAILITY_TALENT                = 1430033,
+    SPELL_DH_FRAILITY_DEBUFF_AURA1          = 1430035,
+    SPELL_DH_FRAILITY_EXPLOSION             = 1430034,
     SPELL_DH_GLIDE_AURA_PERIODIC_TRIGGER    = 1410104,
     SPELL_DH_GLIDE_DURATION_AURA            = 1410103,
     SPELL_DH_GLIDE_KNOCKBACK                = 1410106,
@@ -46,13 +56,23 @@ enum DemonHunterSpells
     SPELL_DH_GLUTTONY_TALENT                = 1410029,
     SPELL_DH_IMMOLATION_AURA_SPELL          = 1410076,
     SPELL_DH_IMMOLATION_AURA_TRIGGER        = 1410135,
+    SPELL_DH_IMP_IMMOLATION_AURA_DAMAGE     = 1410085,
+    SPELL_DH_IMP_IMMOLATION_AURA_PASSIVE    = 1410084,
+    SPELL_DH_INFERNAL_STRIKE_DAMAGE         = 1430030,
+    SPELL_DH_INFERNAL_STRIKE_IMMUNITY_AURA  = 1430029,
+    SPELL_DH_MASTERY_FELPACT_AURA           = 1430001,
+    SPELL_DH_MASTERY_FELPACT_EXPLOSION      = 1430002,
     SPELL_DH_MASTERY_HAVOC1                 = 1420000,
     SPELL_DH_MASTERY_HAVOC2                 = 1420001,
+    SPELL_DH_MASTERY_VENGEANCE1             = 1430000,
     SPELL_DH_METAMORPHOSIS_DAZE             = 1410110,
     SPELL_DH_METAMORPHOSIS_HAVOC            = 1420002,
     SPELL_DH_METAMORPHOSIS_SPELL            = 1410107,
     SPELL_DH_METAMORPHOSIS_STUN_DAMAGE      = 1410109,
     SPELL_DH_METAMORPHOSIS_TRANSFORM        = 1410108,
+    SPELL_DH_METAMORPHOSIS_VENGEANCE        = 1430013,
+    SPELL_DH_MOMENTUM_PROC                  = 1420017,
+    SPELL_DH_MOMENTUM_TALENT                = 1420016,
     SPELL_DH_NEMESIS_BEASTS                 = 1410093,
     SPELL_DH_NEMESIS_CRITTERS               = 1410100,
     SPELL_DH_NEMESIS_DRAGONKINS             = 1410094,
@@ -64,20 +84,32 @@ enum DemonHunterSpells
     SPELL_DH_NEMESIS_UNDEADS                = 1410098,
     SPELL_DH_PITCH_BLACK_BUFF               = 1410059,
     SPELL_DH_PITCH_BLACK_TALENT             = 1410058,
+    SPELL_DH_PUNISH_THE_WEAK_PROC           = 1420101,
+    SPELL_DH_PUNISH_THE_WEAK_SPELL          = 1420011,
+    SPELL_DH_PUNISH_THE_WEAK_TALENT         = 1420100,
     SPELL_DH_SHATTERED_SOUL_PROC            = 1410083,
+    SPELL_DH_SHEAR_MAIN                     = 1430014,
     SPELL_DH_SHIFTING_STEEL_PROC            = 1410039,
     SPELL_DH_SIGIL_OF_COMBUSTION_EXPLOSION  = 1410079,
+    SPELL_DH_SIGIL_OF_FLAME_DUMMY           = 1430019,
     SPELL_DH_SIGIL_OF_FLAME_EXPLOSION       = 1410004,
     SPELL_DH_SIGIL_OF_FLAME_ENERGIZE        = 1410005,
+    SPELL_DH_SIGIL_OF_FLAME_STUN            = 1430023,
     SPELL_DH_SIGIL_OF_MISERY_EXPLOSION      = 1410007,
     SPELL_DH_SIGIL_OF_SILENCE_EXPLOSION     = 1410016,
     SPELL_DH_SIGIL_OF_SUPRESSION_EXPLOSION  = 1410024,
     SPELL_DH_SLOTH_DEBUFF                   = 1410026,
     SPELL_DH_SLOTH_TALENT                   = 1410025,
+    SPELL_DH_SMOTHER_TALENT                 = 1430022,
+    SPELL_DH_SOUL_CRUSH_TALENT              = 1430000,
+    SPELL_DH_SOUL_FRAGMENT                  = 1430010,
+    SPELL_DH_STOKE_TALENT                   = 1430018,
     SPELL_DH_TORMENT_SPELL                  = 1410073,
     SPELL_DH_TORMENT_TAUNT                  = 1410074,
     SPELL_DH_TORMENTOR_DEBUFF               = 1410034,
     SPELL_DH_TORMENTOR_TALENT               = 1410033,
+    SPELL_DH_TYRANT_FORM_PROC               = 1410046,
+    SPELL_DH_TYRANT_FORM_TALENT             = 1410045,
     SPELL_DH_UNFORGIVING_PACT_SHIELD        = 1410061,
     SPELL_DH_UNFORGIVING_PACT_SPELL         = 1410060,
     SPELL_DH_VANITY_AURA_COMBAT             = 1410018,
@@ -95,17 +127,13 @@ class SpellDemonHunterCastFromSummonEvent : public BasicEvent
 {
 public:
     SpellDemonHunterCastFromSummonEvent(Unit* caster, Unit* target, uint32 summon, uint32 spellId) : _caster(caster), _target(target), _summon(summon), _spellId(spellId) {}
-
     bool Execute(uint64 /*time*/, uint32 /*diff*/) override
     {
         Creature* pSpawn = _caster->SummonCreature(_summon, _caster->GetPositionX(), _caster->GetPositionY(), _caster->GetPositionZ(), 0.0f, TEMPSUMMON_TIMED_DESPAWN, 1500);
         pSpawn->SetFaction(_caster->GetFaction());
         pSpawn->CastSpell(_target, _spellId, true);
-
-        //_caster->CastSpell(_victim, _spellId);
         return true;
     }
-
 private:
     Unit* _caster;
     Unit* _target;
@@ -131,7 +159,7 @@ private:
 };
 
 // 1410078 - Sigil of Combustion
-struct at_dh_sigil_of_combustion : AreaTriggerAI
+struct at_dh_sigil_of_combustion : public AreaTriggerAI
 {
     at_dh_sigil_of_combustion(AreaTrigger* areatrigger) : AreaTriggerAI(areatrigger) { }
 
@@ -163,11 +191,20 @@ struct at_dh_sigil_of_flame : public AreaTriggerAI
 
         caster->CastSpell(at->GetPositionX(), at->GetPositionY(), at->GetPositionZ(), SPELL_DH_SIGIL_OF_FLAME_EXPLOSION, true);
         caster->CastSpell(caster, SPELL_DH_SIGIL_OF_FLAME_ENERGIZE, true);
+
+        if (caster->HasAura(SPELL_DH_STOKE_TALENT))
+            caster->CastSpell(at->GetPositionX(), at->GetPositionY(), at->GetPositionZ(), SPELL_DH_SIGIL_OF_FLAME_DUMMY, true);
+
+        if (caster->HasAura(SPELL_DH_SMOTHER_TALENT))
+            caster->CastSpell(at->GetPositionX(), at->GetPositionY(), at->GetPositionZ(), SPELL_DH_SIGIL_OF_FLAME_STUN, true);
+
+        if (caster->HasAura(SPELL_DH_FRAILITY_TALENT))
+            caster->CastSpell(at->GetPositionX(), at->GetPositionY(), at->GetPositionZ(), SPELL_DH_FRAILITY_EXPLOSION, true);
     }
 };
 
 // 1410006 - Sigil of Misery
-struct at_dh_sigil_of_misery : AreaTriggerAI
+struct at_dh_sigil_of_misery : public AreaTriggerAI
 {
     at_dh_sigil_of_misery(AreaTrigger* areatrigger) : AreaTriggerAI(areatrigger) { }
 
@@ -189,7 +226,7 @@ struct at_dh_sigil_of_misery : AreaTriggerAI
 };
 
 // 1410015 - Sigil of Silence
-struct at_dh_sigil_of_silence : AreaTriggerAI
+struct at_dh_sigil_of_silence : public AreaTriggerAI
 {
     at_dh_sigil_of_silence(AreaTrigger* areatrigger) : AreaTriggerAI(areatrigger) { }
 
@@ -211,7 +248,7 @@ struct at_dh_sigil_of_silence : AreaTriggerAI
 };
 
 // 1410024 - Sigil of Supression
-struct at_dh_sigil_of_supression : AreaTriggerAI
+struct at_dh_sigil_of_supression : public AreaTriggerAI
 {
     at_dh_sigil_of_supression(AreaTrigger* areatrigger) : AreaTriggerAI(areatrigger) { }
 
@@ -309,7 +346,7 @@ class spell_dh_chaos_strike : public SpellScript
         Unit* caster = GetCaster();
         Unit* target = GetHitUnit();
 
-        if (caster->HasAura(SPELL_DH_METAMORPHOSIS_HAVOC))
+        /*if (caster->HasAura(SPELL_DH_METAMORPHOSIS_HAVOC))
         {
             PreventHitDefaultEffect(effIndex);
 
@@ -319,7 +356,7 @@ class spell_dh_chaos_strike : public SpellScript
                 caster->CastSpell(target, SPELL_DH_ANNIHILATION_MH, true);
             else if (triggerSpell == SPELL_DH_CHAOS_STRIKE_OH)
                 caster->CastSpell(target, SPELL_DH_ANNIHILATION_OH, true);
-        }
+        }*/
     }
 
     void Register() override
@@ -327,6 +364,52 @@ class spell_dh_chaos_strike : public SpellScript
         OnEffectHitTarget += SpellEffectFn(spell_dh_chaos_strike::HandleOnHitTarget, EFFECT_0, SPELL_EFFECT_TRIGGER_SPELL);
         OnEffectHitTarget += SpellEffectFn(spell_dh_chaos_strike::HandleOnHitTarget, EFFECT_1, SPELL_EFFECT_TRIGGER_SPELL);
     }
+};
+
+// 1420029 - Critical Chaos
+class spell_dh_critical_chaos : public SpellScript
+{
+    PrepareSpellScript(spell_dh_critical_chaos);
+
+    bool Validate(SpellInfo const* /*spellEntry*/) override
+    {
+        return ValidateSpellInfo(
+            {
+                SPELL_DH_CRITICAL_CHAOS_AURA_PROC,
+                SPELL_DH_CRITICAL_CHAOS_TALENT
+            });
+    }
+
+    void HandleBeforeHit(SpellMissInfo missInfo)
+    {
+        caster = GetCaster();
+
+        if (caster->HasAura(SPELL_DH_CRITICAL_CHAOS_AURA_PROC))
+        {
+            duration = caster->GetAura(SPELL_DH_CRITICAL_CHAOS_AURA_PROC)->GetDuration();
+        }
+    }
+
+    void HandleAfterHit()
+    {
+        if (caster && caster->HasAura(SPELL_DH_CRITICAL_CHAOS_AURA_PROC))
+        {
+            Aura* aura = caster->GetAura(SPELL_DH_CRITICAL_CHAOS_AURA_PROC);
+
+            if (aura->GetStackAmount() > 1)
+                aura->SetDuration(duration);
+        }
+    }
+
+    void Register() override
+    {
+        BeforeHit += BeforeSpellHitFn(spell_dh_critical_chaos::HandleBeforeHit);
+        AfterHit += SpellHitFn(spell_dh_critical_chaos::HandleAfterHit);
+    }
+
+private:
+    Unit* caster;
+    float duration = 0;
 };
 
 // 1410051 - Darkness
@@ -517,6 +600,45 @@ class spell_dh_fel_rush_ground : public AuraScript
     }
 };
 
+// 1430034 - Fraility
+class spell_dh_fraility_explosion : public SpellScript
+{
+    PrepareSpellScript(spell_dh_fraility_explosion);
+
+    bool Validate(SpellInfo const* /*spellEntry*/) override
+    {
+        return ValidateSpellInfo(
+            {
+                SPELL_DH_FRAILITY_DEBUFF_AURA1,
+                SPELL_DH_FRAILITY_EXPLOSION,
+                SPELL_DH_SOUL_CRUSH_TALENT
+            });
+    }
+
+    void HandleOnHit(SpellEffIndex /*effIndex*/)
+    {
+        Unit* caster = GetCaster();
+        Unit* target = GetHitUnit();
+
+        if (caster->HasAura(SPELL_DH_SOUL_CRUSH_TALENT))
+        {
+            for (uint32 i = SPELL_DH_FRAILITY_DEBUFF_AURA1; i < SPELL_DH_FRAILITY_DEBUFF_AURA1 + 12; ++i)
+                if (!target->HasAura(i))
+                {
+                    caster->CastSpell(target, i, true);
+                    break;
+                }
+        }
+        else
+            caster->CastSpell(target, SPELL_DH_FRAILITY_DEBUFF_AURA1, true);
+    }
+
+    void Register() override
+    {
+        OnEffectHitTarget += SpellEffectFn(spell_dh_fraility_explosion::HandleOnHit, EFFECT_0, SPELL_EFFECT_DUMMY);
+    }
+};
+
 // 1410103 - Glide
 class spell_dh_glide : public SpellScript
 {
@@ -599,10 +721,13 @@ class spell_dh_immolation_aura_trigger : public SpellScript
     {
         return ValidateSpellInfo(
             {
+                SPELL_DH_BURNING_HATRED_PROC,
+                SPELL_DH_BURNING_HATRED_TALENT,
                 SPELL_DH_AURA_OF_FLAME_BUFF,
                 SPELL_DH_AURA_OF_FLAME_TALENT,
                 SPELL_DH_AURA_OF_PAIN_BUFF,
                 SPELL_DH_AURA_OF_PAIN_TALENT,
+                SPELL_DH_BACKDRAFT_IMMOLATION_AURA,
                 SPELL_DH_BACKDRAFT_TALENT,
                 SPELL_DH_IMMOLATION_AURA_SPELL,
                 SPELL_DH_IMMOLATION_AURA_TRIGGER
@@ -614,20 +739,94 @@ class spell_dh_immolation_aura_trigger : public SpellScript
         Unit* caster = GetCaster();
 
         if (caster->HasAura(SPELL_DH_BACKDRAFT_TALENT))
-            caster->m_Events.AddEvent(new SpellDemonHunterCastFromSummonEvent(caster, caster, NPC_DH_IMMOLATION_AURA_CASTER, SPELL_DH_IMMOLATION_AURA_SPELL), 0);
+        {
+            if (!caster->HasAura(SPELL_DH_IMMOLATION_AURA_SPELL))
+                caster->CastSpell(caster, SPELL_DH_IMMOLATION_AURA_SPELL, true);
+            else       //Honk honk imma clown
+                for (uint32 i = SPELL_DH_BACKDRAFT_IMMOLATION_AURA; i < SPELL_DH_BACKDRAFT_IMMOLATION_AURA + 12; ++i)
+                    if (!caster->HasAura(i))
+                    {
+                        caster->CastSpell(caster, i, true);
+                        break;
+                    }
+
+            uint32 chance = sSpellMgr->GetSpellInfo(SPELL_DH_BACKDRAFT_TALENT)->Effects[EFFECT_0].CalcValue();
+            flag96 spellFlags = sSpellMgr->GetSpellInfo(SPELL_DH_IMMOLATION_AURA_TRIGGER)->SpellFamilyFlags;
+
+            if (irand(1, 100) <= chance)
+                caster->ToPlayer()->TriggerChargeRegen(spellFlags);
+        }
         else
             caster->CastSpell(caster, SPELL_DH_IMMOLATION_AURA_SPELL, true);
 
         if (caster->HasAura(SPELL_DH_AURA_OF_FLAME_TALENT))
-            caster->CastSpell(caster, SPELL_DH_AURA_OF_FLAME_TALENT, true);
+            caster->CastSpell(caster, SPELL_DH_AURA_OF_FLAME_BUFF, true);
 
         if (caster->HasAura(SPELL_DH_AURA_OF_PAIN_TALENT))
             caster->CastSpell(caster, SPELL_DH_AURA_OF_PAIN_BUFF, true);
+
+        if (caster->HasAura(SPELL_DH_IMP_IMMOLATION_AURA_PASSIVE))
+            caster->CastSpell(caster, SPELL_DH_IMP_IMMOLATION_AURA_DAMAGE, true);
+
+        if (caster->HasAura(SPELL_DH_BURNING_HATRED_TALENT))
+            caster->CastSpell(caster, SPELL_DH_BURNING_HATRED_PROC, true);
     }
 
     void Register() override
     {
         OnHit += SpellHitFn(spell_dh_immolation_aura_trigger::HandleOnHit);
+    }
+};
+
+// 1430029 - Infernal Strike
+class spell_dh_infernal_strike_immunity_aura : public AuraScript
+{
+    PrepareAuraScript(spell_dh_infernal_strike_immunity_aura);
+
+    bool Validate(SpellInfo const* /*spellEntry*/) override
+    {
+        return ValidateSpellInfo(
+            {
+                SPELL_DH_INFERNAL_STRIKE_DAMAGE,
+                SPELL_DH_INFERNAL_STRIKE_IMMUNITY_AURA
+            });
+    }
+
+    void HandleOnRemove()
+    {
+        Unit* caster = GetCaster();
+
+        caster->CastSpell(caster, SPELL_DH_INFERNAL_STRIKE_DAMAGE, true);
+    }
+
+    void Register() override
+    {
+        OnAuraRemove += AuraRemoveFn(spell_dh_infernal_strike_immunity_aura::HandleOnRemove);
+    }
+};
+
+// 1430001 - Mastery: Felpact
+class spell_dh_mastery_felpact_aura : public AuraScript
+{
+    PrepareAuraScript(spell_dh_mastery_felpact_aura);
+
+    bool Validate(SpellInfo const* /*spellEntry*/) override
+    {
+        return ValidateSpellInfo(
+            {
+                SPELL_DH_MASTERY_FELPACT_AURA,
+                SPELL_DH_MASTERY_FELPACT_EXPLOSION
+            });
+    }
+
+    void HandleOnRemove()
+    {
+        GetCaster()->CastSpell(GetCaster(), SPELL_DH_MASTERY_FELPACT_EXPLOSION, true);
+    }
+
+    void Register() override
+    {
+        OnAuraRemove += AuraRemoveFn(spell_dh_mastery_felpact_aura::HandleOnRemove);
     }
 };
 
@@ -704,9 +903,13 @@ class spell_dh_metamorphosis_immunity_aura : public AuraScript
         return ValidateSpellInfo(
             {
                 SPELL_DH_MASTERY_HAVOC1,
+                SPELL_DH_MASTERY_VENGEANCE1,
                 SPELL_DH_METAMORPHOSIS_HAVOC,
                 SPELL_DH_METAMORPHOSIS_STUN_DAMAGE,
                 SPELL_DH_METAMORPHOSIS_TRANSFORM,
+                SPELL_DH_METAMORPHOSIS_VENGEANCE,
+                SPELL_DH_TYRANT_FORM_PROC,
+                SPELL_DH_TYRANT_FORM_TALENT,
             });
     }
 
@@ -719,11 +922,50 @@ class spell_dh_metamorphosis_immunity_aura : public AuraScript
 
         if (caster->HasAura(SPELL_DH_MASTERY_HAVOC1))
             caster->CastSpell(caster, SPELL_DH_METAMORPHOSIS_HAVOC, true);
+
+        if (caster->HasAura(SPELL_DH_TYRANT_FORM_TALENT))
+            caster->CastSpell(caster, SPELL_DH_TYRANT_FORM_PROC, true);
+
+        if (caster->HasAura(SPELL_DH_MASTERY_VENGEANCE1))
+            caster->CastSpell(caster, SPELL_DH_METAMORPHOSIS_VENGEANCE, true);
     }
 
     void Register() override
     {
         OnAuraRemove += AuraRemoveFn(spell_dh_metamorphosis_immunity_aura::HandleOnRemove);
+    }
+};
+
+// 1420016 - Momentum
+class spell_dh_momentum_aura : public AuraScript
+{
+    PrepareAuraScript(spell_dh_momentum_aura);
+
+    bool Validate(SpellInfo const* /*spellEntry*/) override
+    {
+        return ValidateSpellInfo(
+            {
+                SPELL_DH_MOMENTUM_PROC,
+                SPELL_DH_MOMENTUM_TALENT
+            });
+    }
+
+    void HandleProc(ProcEventInfo& eventInfo)
+    {
+        Unit* caster = GetCaster();
+
+        if (caster->HasAura(SPELL_DH_MOMENTUM_PROC))
+        {
+            uint8 stackAmount = caster->GetAura(SPELL_DH_MOMENTUM_PROC)->GetStackAmount();
+
+            if (stackAmount && stackAmount >= 15)
+                PreventDefaultAction();
+        }
+    }
+
+    void Register() override
+    {
+        OnProc += AuraProcFn(spell_dh_momentum_aura::HandleProc);
     }
 };
 
@@ -830,27 +1072,108 @@ class spell_dh_pitch_black_proc : public SpellScript
     }
 };
 
-// 1410039 - Shifting Steel
-class spell_dh_shifting_steel_proc : public SpellScript
+// 1420100 - Punish the Weak
+class spell_dh_punish_the_weak_talent_aura : public AuraScript
 {
-    PrepareSpellScript(spell_dh_shifting_steel_proc);
+    PrepareAuraScript(spell_dh_punish_the_weak_talent_aura);
 
     bool Validate(SpellInfo const* /*spellEntry*/) override
     {
         return ValidateSpellInfo(
             {
-                SPELL_DH_METAMORPHOSIS_SPELL,
-                SPELL_DH_SHIFTING_STEEL_PROC
+                SPELL_DH_PUNISH_THE_WEAK_PROC,
+                SPELL_DH_PUNISH_THE_WEAK_SPELL,
+                SPELL_DH_PUNISH_THE_WEAK_TALENT
             });
+    }
+
+    void HandleOnApply()
+    {
+        Unit* caster = GetCaster();
+
+        if (caster->GetTypeId() == TYPEID_PLAYER)
+            caster->ToPlayer()->learnSpell(SPELL_DH_PUNISH_THE_WEAK_SPELL);
+    }
+
+    void HandleOnRemove()
+    {
+        Unit* caster = GetCaster();
+
+        if (caster->GetTypeId() == TYPEID_PLAYER)
+            caster->ToPlayer()->removeSpell(SPELL_DH_PUNISH_THE_WEAK_SPELL, SPEC_MASK_ALL, false);
+
+        if (caster->HasAura(SPELL_DH_PUNISH_THE_WEAK_PROC))
+            caster->RemoveAura(SPELL_DH_PUNISH_THE_WEAK_PROC);
     }
 
     void Register() override
     {
-        Player* caster = GetCaster()->ToPlayer();
-        uint32 cooldownReduction = -(sSpellMgr->GetSpellInfo(SPELL_DH_SHIFTING_STEEL_PROC)->Effects[EFFECT_0].CalcValue() * IN_MILLISECONDS);
+        OnAuraApply += AuraApplyFn(spell_dh_punish_the_weak_talent_aura::HandleOnApply);
+        OnAuraRemove += AuraRemoveFn(spell_dh_punish_the_weak_talent_aura::HandleOnRemove);
+    }
+};
 
-        if (caster->HasSpellCooldown(SPELL_DH_METAMORPHOSIS_SPELL))
-            caster->ModifySpellCooldown(SPELL_DH_METAMORPHOSIS_SPELL, cooldownReduction);
+// 1430014 - Shear
+class spell_dh_shear : public SpellScript
+{
+    PrepareSpellScript(spell_dh_shear);
+
+    bool Validate(SpellInfo const* /*spellEntry*/) override
+    {
+        return ValidateSpellInfo(
+            {
+                SPELL_DH_METAMORPHOSIS_VENGEANCE,
+                SPELL_DH_SHEAR_MAIN,
+                SPELL_DH_SOUL_FRAGMENT
+            });
+    }
+
+    void HandleOnHit()
+    {
+        Unit* caster = GetCaster();
+
+        if (caster->HasAura(SPELL_DH_METAMORPHOSIS_VENGEANCE))
+        {
+            for (uint8 u = 0; u < 2; ++u)
+                caster->CastSpell(caster, SPELL_DH_SOUL_FRAGMENT, true);
+        }
+        else
+            caster->CastSpell(caster, SPELL_DH_SOUL_FRAGMENT, true);
+    }
+
+    void Register() override
+    {
+        AfterHit += SpellHitFn(spell_dh_shear::HandleOnHit);
+    }
+};
+
+// 1410004 - Sigil of Misery
+class spell_dh_sigil_of_misery_aura : public AuraScript
+{
+    PrepareAuraScript(spell_dh_sigil_of_misery_aura);
+
+    bool Validate(SpellInfo const* /*spellEntry*/) override
+    {
+        return ValidateSpellInfo(
+            {
+                SPELL_DH_FAMINE_DEBUFF,
+                SPELL_DH_FAMINE_TALENT,
+                SPELL_DH_SIGIL_OF_MISERY_EXPLOSION
+            });
+    }
+
+    void HandleOnRemove()
+    {
+        Unit* caster = GetCaster();
+        Unit* target = GetTarget();
+
+        if (caster->HasAura(SPELL_DH_FAMINE_TALENT))
+            caster->CastSpell(target, SPELL_DH_FAMINE_DEBUFF, true);
+    }
+
+    void Register() override
+    {
+        OnAuraRemove += AuraRemoveFn(spell_dh_sigil_of_misery_aura::HandleOnRemove);
     }
 };
 
@@ -946,7 +1269,6 @@ class spell_dh_unforgiving_pact : public SpellScript
         int32 modPct = sSpellMgr->GetSpellInfo(SPELL_DH_UNFORGIVING_PACT_SHIELD)->Effects[EFFECT_1].CalcValue();
         damage = round(CalculatePct(damage, modPct));
 
-        ChatHandler(caster->ToPlayer()->GetSession()).PSendSysMessage("Absorb: %i", damage);
         caster->CastCustomSpell(caster, SPELL_DH_UNFORGIVING_PACT_SHIELD, &damage, nullptr, nullptr, true);
     }
 
@@ -1004,7 +1326,7 @@ class spell_debug : public SpellScript
 
     void HandleOnHit()
     {
-        ChatHandler(GetCaster()->ToPlayer()->GetSession()).PSendSysMessage("Unit Movement Flags: %u", GetCaster()->GetUnitMovementFlags());
+        ChatHandler(GetCaster()->ToPlayer()->GetSession()).PSendSysMessage("Spell ID: %u", GetSpellInfo()->Id);
     }
 
     void Register() override
@@ -1023,6 +1345,7 @@ void AddSC_demonhunter_spell_scripts()
     RegisterSpellScript(spell_dh_chaos_nova);
     RegisterSpellScript(spell_dh_chaos_nova_proc);
     RegisterSpellScript(spell_dh_chaos_strike);
+    RegisterSpellScript(spell_dh_critical_chaos);
     RegisterSpellScript(spell_dh_darkness);
     RegisterSpellScript(spell_dh_dark_night_proc);
     RegisterSpellScript(spell_dh_double_jump);
@@ -1032,12 +1355,16 @@ void AddSC_demonhunter_spell_scripts()
     RegisterSpellScript(spell_dh_glide);
     RegisterSpellScript(spell_dh_glide_aura);
     RegisterSpellScript(spell_dh_immolation_aura_trigger);
+    RegisterSpellScript(spell_dh_mastery_felpact_aura);
     RegisterSpellScript(spell_dh_mastery_havoc_aura);
     RegisterSpellScript(spell_dh_metamorphosis_damage);
     RegisterSpellScript(spell_dh_metamorphosis_immunity_aura);
+    RegisterSpellScript(spell_dh_momentum_aura);
     RegisterSpellScript(spell_dh_nemesis_aura);
     RegisterSpellScript(spell_dh_pitch_black_proc);
-    RegisterSpellScript(spell_dh_shifting_steel_proc);
+    RegisterSpellScript(spell_dh_punish_the_weak_talent_aura);
+    RegisterSpellScript(spell_dh_shear);
+    RegisterSpellScript(spell_dh_sigil_of_misery_aura);
     RegisterSpellScript(spell_dh_torment);
     RegisterSpellScript(spell_dh_tormentor);
     RegisterSpellScript(spell_dh_unforgiving_pact);

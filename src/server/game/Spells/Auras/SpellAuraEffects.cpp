@@ -2805,10 +2805,10 @@ void AuraEffect::HandleAuraTransform(AuraApplication const* aurApp, uint8 mode, 
                         switch (target->getRace())
                         {
                         case RACE_BLOODELF:
-                            target->SetDisplayId(target->getGender() == GENDER_MALE ? 27036 : 4162);
+                            target->SetDisplayId(target->getGender() == GENDER_MALE ? 27036 : 23177);
                             break;
                         case RACE_NIGHTELF:
-                            target->SetDisplayId(target->getGender() == GENDER_MALE ? 27036 : 4162);
+                            target->SetDisplayId(target->getGender() == GENDER_MALE ? 27036 : 23177);
                             break;
                         default:
                             break;
