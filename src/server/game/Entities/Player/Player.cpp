@@ -5245,7 +5245,7 @@ uint32 Player::GetShieldBlockValue() const
 
 float Player::GetMeleeCritFromAgility()
 {
-    uint8 level = GetLevel();
+    uint8 level = STATIC_STAT_LEVEL;
     uint32 pclass = getClass();
 
     if (level > GT_MAX_LEVEL)
@@ -5293,7 +5293,7 @@ void Player::GetDodgeFromAgility(float& diminishing, float& nondiminishing)
         2.00f / 1.15f   // Druid
     };
 
-    uint8 level = GetLevel();
+    uint8 level = STATIC_STAT_LEVEL;
     uint32 pclass = getClass();
 
     if (level > GT_MAX_LEVEL)
@@ -5315,7 +5315,7 @@ void Player::GetDodgeFromAgility(float& diminishing, float& nondiminishing)
 
 float Player::GetSpellCritFromIntellect()
 {
-    uint8 level = GetLevel();
+    uint8 level = STATIC_STAT_LEVEL;
     uint32 pclass = getClass();
 
     if (level > GT_MAX_LEVEL)
@@ -5332,7 +5332,7 @@ float Player::GetSpellCritFromIntellect()
 
 float Player::GetRatingMultiplier(CombatRating cr) const
 {
-    uint8 level = GetLevel();
+    uint8 level = STATIC_STAT_LEVEL;
 
     if (level > GT_MAX_LEVEL)
         level = GT_MAX_LEVEL;
@@ -5982,17 +5982,12 @@ ActionButton* Player::addActionButton(uint8 button, uint32 action, uint8 type)
     if (!IsActionButtonDataValid(button, action, type))
         return nullptr;
 
-    // it create new button (NEW state) if need or return existed
-    auto ab = m_actionButtons.find(button);
-    if (ab != m_actionButtons.end()) {
-        // set data and update to CHANGED if not NEW
-        ab->second.SetActionAndType(action, ActionButtonType(type));
+    ActionButton& ab = m_actionButtons[button];
+    // set data and update to CHANGED if not NEW
+    ab.SetActionAndType(action, ActionButtonType(type));
 
-        LOG_DEBUG("entities.player", "Player {} Added Action {} (type {}) to Button {}", GetGUID().ToString(), action, type, button);
-        return &ab->second;
-    }
-
-    return nullptr;
+    LOG_DEBUG("entities.player", "Player {} Added Action {} (type {}) to Button {}", GetGUID().ToString(), action, type, button);
+    return &ab;
 }
 
 void Player::removeActionButton(uint8 button)
@@ -16351,6 +16346,16 @@ void Player::_LoadRandomBGStatus(PreparedQueryResult result)
         m_IsBGRandomWinner = true;
 }
 
+void Player::SendItemQueryPacket(CustomItemTemplate* curItem) const
+{
+    if (curItem)
+    {
+        curItem->_GetInfo()->InitializeQueryData();
+        WorldPacket* response = curItem->_GetInfo()->GetQueryData();
+        GetSession()->SendPacket(response);
+    }
+}
+
 float Player::GetAverageItemLevel()
 {
     float sum = 0;
@@ -16364,7 +16369,7 @@ float Player::GetAverageItemLevel()
             continue;
 
         if (m_items[i] && m_items[i]->GetTemplate())
-            sum += m_items[i]->GetTemplate()->GetItemLevelIncludingQuality(level);
+            sum += m_items[i]->GetTemplate()->GetItemLevelIncludingQuality();
 
         ++count;
     }
