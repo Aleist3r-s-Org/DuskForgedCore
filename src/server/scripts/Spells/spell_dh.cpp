@@ -44,9 +44,10 @@ enum DemonHunterSpells
     SPELL_DH_FAMINE_TALENT                  = 1430025,
     SPELL_DH_FEL_RUSH_AIR                   = 1410125,
     SPELL_DH_FEL_RUSH_GROUND                = 1410126,
-    SPELL_DH_FRAILITY_TALENT                = 1430033,
-    SPELL_DH_FRAILITY_DEBUFF_AURA1          = 1430035,
-    SPELL_DH_FRAILITY_EXPLOSION             = 1430034,
+    SPELL_DH_FRAILTY_TALENT                 = 1430033,
+    SPELL_DH_FRAILTY_DEBUFF_AURA1           = 1430035,
+    SPELL_DH_FRAILTY_EXPLOSION              = 1430034,
+    SPELL_DH_FRAILTY_HEAL                   = 1430047,
     SPELL_DH_GLIDE_AURA_PERIODIC_TRIGGER    = 1410104,
     SPELL_DH_GLIDE_DURATION_AURA            = 1410103,
     SPELL_DH_GLIDE_KNOCKBACK                = 1410106,
@@ -198,8 +199,8 @@ struct at_dh_sigil_of_flame : public AreaTriggerAI
         if (caster->HasAura(SPELL_DH_SMOTHER_TALENT))
             caster->CastSpell(at->GetPositionX(), at->GetPositionY(), at->GetPositionZ(), SPELL_DH_SIGIL_OF_FLAME_STUN, true);
 
-        if (caster->HasAura(SPELL_DH_FRAILITY_TALENT))
-            caster->CastSpell(at->GetPositionX(), at->GetPositionY(), at->GetPositionZ(), SPELL_DH_FRAILITY_EXPLOSION, true);
+        if (caster->HasAura(SPELL_DH_FRAILTY_TALENT))
+            caster->CastSpell(at->GetPositionX(), at->GetPositionY(), at->GetPositionZ(), SPELL_DH_FRAILTY_EXPLOSION, true);
     }
 };
 
@@ -544,7 +545,7 @@ class spell_dh_fel_rush : public SpellScript
     {
         Unit* caster = GetCaster();
 
-        if (caster->ToPlayer()->IsFalling() || caster->ToPlayer()->HasUnitState(UNIT_STATE_JUMPING))
+        if (caster->ToPlayer()->IsFalling() || caster->HasUnitState(UNIT_STATE_JUMPING))
             caster->CastSpell(caster, SPELL_DH_FEL_RUSH_AIR, true);
         else
             caster->CastSpell(caster, SPELL_DH_FEL_RUSH_GROUND, true);
@@ -600,17 +601,17 @@ class spell_dh_fel_rush_ground : public AuraScript
     }
 };
 
-// 1430034 - Fraility
-class spell_dh_fraility_explosion : public SpellScript
+// 1430034 - Frailty
+class spell_dh_frailty_explosion : public SpellScript
 {
-    PrepareSpellScript(spell_dh_fraility_explosion);
+    PrepareSpellScript(spell_dh_frailty_explosion);
 
     bool Validate(SpellInfo const* /*spellEntry*/) override
     {
         return ValidateSpellInfo(
             {
-                SPELL_DH_FRAILITY_DEBUFF_AURA1,
-                SPELL_DH_FRAILITY_EXPLOSION,
+                SPELL_DH_FRAILTY_DEBUFF_AURA1,
+                SPELL_DH_FRAILTY_EXPLOSION,
                 SPELL_DH_SOUL_CRUSH_TALENT
             });
     }
@@ -622,7 +623,7 @@ class spell_dh_fraility_explosion : public SpellScript
 
         if (caster->HasAura(SPELL_DH_SOUL_CRUSH_TALENT))
         {
-            for (uint32 i = SPELL_DH_FRAILITY_DEBUFF_AURA1; i < SPELL_DH_FRAILITY_DEBUFF_AURA1 + 12; ++i)
+            for (uint32 i = SPELL_DH_FRAILTY_DEBUFF_AURA1; i < SPELL_DH_FRAILTY_DEBUFF_AURA1 + 12; ++i)
                 if (!target->HasAura(i))
                 {
                     caster->CastSpell(target, i, true);
@@ -630,12 +631,47 @@ class spell_dh_fraility_explosion : public SpellScript
                 }
         }
         else
-            caster->CastSpell(target, SPELL_DH_FRAILITY_DEBUFF_AURA1, true);
+            caster->CastSpell(target, SPELL_DH_FRAILTY_DEBUFF_AURA1, true);
     }
 
     void Register() override
     {
-        OnEffectHitTarget += SpellEffectFn(spell_dh_fraility_explosion::HandleOnHit, EFFECT_0, SPELL_EFFECT_DUMMY);
+        OnEffectHitTarget += SpellEffectFn(spell_dh_frailty_explosion::HandleOnHit, EFFECT_0, SPELL_EFFECT_DUMMY);
+    }
+};
+
+// 1430035-1430046 - Frailty
+class spell_dh_frailty_debuf_aura : public AuraScript
+{
+    PrepareAuraScript(spell_dh_frailty_debuf_aura);
+
+    bool Validate(SpellInfo const* /*spellEntry*/) override
+    {
+        return ValidateSpellInfo(
+            {
+                SPELL_DH_FRAILTY_DEBUFF_AURA1,
+                SPELL_DH_FRAILTY_HEAL
+            });
+    }
+
+    void HandleProc(ProcEventInfo& eventInfo)
+    {
+        PreventDefaultAction();
+
+        Unit* caster = GetCaster();
+        Unit* attacker = eventInfo.GetDamageInfo()->GetAttacker();
+        AuraEffect* aurEff = caster->GetAura(SPELL_DH_FRAILTY_DEBUFF_AURA1)->GetEffect(EFFECT_0);
+        int32 damageDone = eventInfo.GetDamageInfo()->GetDamage();
+        int32 healing = CalculatePct(damageDone, aurEff->GetAmount());
+
+        if (caster && attacker)
+            if (caster->GetGUID() == attacker->GetGUID())
+                caster->CastCustomSpell(SPELL_DH_FRAILTY_HEAL, SPELLVALUE_BASE_POINT0, healing, caster, true);
+    }
+
+    void Register() override
+    {
+        OnProc += AuraProcFn(spell_dh_frailty_debuf_aura::HandleProc);
     }
 };
 
@@ -802,6 +838,20 @@ class spell_dh_infernal_strike_immunity_aura : public AuraScript
     void Register() override
     {
         OnAuraRemove += AuraRemoveFn(spell_dh_infernal_strike_immunity_aura::HandleOnRemove);
+    }
+};
+
+// 1430030 - Infernal Strike
+class spell_dh_infernal_strike_damage : public SpellScript
+{
+    PrepareSpellScript(spell_dh_infernal_strike_damage);
+
+    bool Validate(SpellInfo const* /*spellEntry*/) override
+    {
+        return ValidateSpellInfo(
+            {
+                
+            });
     }
 };
 
