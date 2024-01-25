@@ -281,7 +281,7 @@ enum AuraType
     SPELL_AURA_HASTE_RANGED                                 = 218,
     SPELL_AURA_MOD_MANA_REGEN_FROM_STAT                     = 219,
     SPELL_AURA_MOD_RATING_FROM_STAT                         = 220,
-    SPELL_AURA_IGNORED                                      = 221,
+    SPELL_AURA_MOD_DETAUNT                                  = 221,
     SPELL_AURA_222                                          = 222,
     SPELL_AURA_RAID_PROC_FROM_CHARGE                        = 223,
     SPELL_AURA_224                                          = 224,
@@ -414,6 +414,7 @@ enum AuraType
     SPELL_AURA_MOD_FORGE_STAT                               = 351,
     SPELL_AURA_MOD_RESTED_XP_MAX_AMOUNT                     = 352,
     SPELL_AURA_MOD_RESTED_XP_RECOVERY_RATE                  = 353,
+    SPELL_AURA_MOD_CHANGE_DAMAGE_SCHOOL_OF_SPELL            = 354,
     TOTAL_AURAS
 };
 
