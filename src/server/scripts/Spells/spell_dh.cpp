@@ -9,6 +9,7 @@
 #include "SpellScript.h"
 #include "ScriptMgr.h"
 #include "TemporarySummon.h"
+#include <G3D/Vector3.h>
 
 enum DemonHunterSpells
 {
@@ -1279,7 +1280,7 @@ class spell_dh_tormentor : public SpellScript
         Unit* target = GetHitUnit();
         uint32 attackerCount = target->getAttackers().size();
 
-        if (attackerCount < 5)
+        if (attackerCount > 5)
             attackerCount = 5;
 
         caster->SetAuraStack(SPELL_DH_TORMENTOR_DEBUFF, target, attackerCount);
@@ -1288,6 +1289,34 @@ class spell_dh_tormentor : public SpellScript
     void Register() override
     {
         AfterHit += SpellHitFn(spell_dh_tormentor::HandleAfterHit);
+    }
+};
+
+// 1410051 - Turn the Tables
+class spell_dh_turn_the_tables : public AuraScript
+{
+    PrepareAuraScript(spell_dh_turn_the_tables);
+
+    bool Validate(SpellInfo const* spellInfo) override
+    {
+        return ValidateSpellInfo({ spellInfo->GetEffect(EFFECT_0).TriggerSpell });
+    }
+
+    void HandleProc(AuraEffect const* aurEff, ProcEventInfo& /*eventInfo*/)
+    {
+        PreventDefaultAction();
+
+        Unit* caster = GetCaster();
+        if (!caster)
+            return;
+
+        Unit* target = GetTarget();
+        target->CastSpell((Unit*)nullptr, GetSpellInfo()->Effects[EFFECT_0].TriggerSpell, true, nullptr, aurEff, caster->GetGUID());
+    }
+
+    void Register() override
+    {
+        OnEffectProc += AuraEffectProcFn(spell_dh_turn_the_tables::HandleProc, EFFECT_0, SPELL_AURA_PROC_TRIGGER_SPELL);
     }
 };
 
@@ -1417,6 +1446,7 @@ void AddSC_demonhunter_spell_scripts()
     RegisterSpellScript(spell_dh_sigil_of_misery_aura);
     RegisterSpellScript(spell_dh_torment);
     RegisterSpellScript(spell_dh_tormentor);
+    RegisterSpellScript(spell_dh_turn_the_tables);
     RegisterSpellScript(spell_dh_unforgiving_pact);
     RegisterSpellScript(spell_dh_vanity_talent);
     RegisterSpellScript(spell_debug);
