@@ -2600,7 +2600,7 @@ protected:
     bool _instantCast;
 
     ForgeStatMap m_forgestats;
-    virtual void AtEnterCombat() { }
+    virtual void AtJustEngagedWith() { }
     virtual void AtExitCombat();
 private:
 

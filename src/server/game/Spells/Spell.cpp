@@ -4264,11 +4264,11 @@ void Spell::_handle_finish_phase()
     // Take for real after all targets are processed
     if (m_needComboPoints)
     {
-        m_caster->ClearComboPoints(true);
+        m_caster->ClearComboPoints();
     }
 
     // Real add combo points from effects
-    if (m_comboTarget && m_comboPointGain)
+    if (m_caster->GetComboTarget() && m_comboPointGain)
     {
         // remove Premed-like effects unless they were caused by ourselves
         // (this Aura removes the already-added CP when it expires from duration - now that we've added CP, this shouldn't happen anymore!)
@@ -4277,7 +4277,7 @@ void Spell::_handle_finish_phase()
             m_caster->RemoveAurasByType(SPELL_AURA_RETAIN_COMBO_POINTS);
         }
 
-        m_caster->AddComboPoints(m_comboTarget, m_comboPointGain);
+        m_caster->AddComboPoints(m_caster->GetComboTarget(), m_comboPointGain);
     }
 
     if (m_caster->m_extraAttacks && GetSpellInfo()->HasEffect(SPELL_EFFECT_ADD_EXTRA_ATTACKS))
@@ -5703,6 +5703,28 @@ SpellCastResult Spell::CheckCast(bool strict)
         if (m_spellInfo->HasAttribute(SPELL_ATTR0_ONLY_INDOORS) &&
                 m_caster->IsOutdoors())
             return SPELL_FAILED_ONLY_INDOORS;
+
+        if (m_spellInfo->HasAttribute(SPELL_ATTR1_CU_NOT_USABLE_IN_INSTANCES))
+        {
+
+            Map* map = m_caster->GetMap();
+            if (map && map->Instanceable())
+            {
+                m_customError = SPELL_CUSTOM_ERROR_NOT_IN_INSTANCES;
+                return SPELL_FAILED_CUSTOM_ERROR;
+            }
+        }
+
+        if (m_spellInfo->HasAttribute(SPELL_ATTR1_CU_USABLE_IN_INSTANCES_ONLY))
+        {
+
+            Map* map = m_caster->GetMap();
+            if (map && !map->Instanceable())
+            {
+                m_customError = SPELL_CUSTOM_ERROR_ONLY_IN_INSTANCES;
+                return SPELL_FAILED_CUSTOM_ERROR;
+            }
+        }
     }
 
     // only check at first call, Stealth auras are already removed at second call

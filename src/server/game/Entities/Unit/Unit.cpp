@@ -7223,7 +7223,6 @@ bool Unit::Attack(Unit* victim, bool meleeAttack)
 
     // Set our target
     SetTarget(victim->GetGUID());
-    AddComboPoints(victim, 0);
 
     if (meleeAttack)
         AddUnitState(UNIT_STATE_MELEE_ATTACKING);
@@ -7253,6 +7252,8 @@ bool Unit::Attack(Unit* victim, bool meleeAttack)
 
     if (meleeAttack)
         SendMeleeAttackStart(victim);
+
+    AddComboPoints(0);
 
     return true;
 }
@@ -7286,7 +7287,6 @@ bool Unit::AttackStop()
     }
 
     SendMeleeAttackStop(victim);
-    AddComboPoints(victim, 0);
 
     return true;
 }
@@ -11517,7 +11517,6 @@ void Unit::setDeathState(DeathState s, bool despawn)
     {
         CombatStop();
         GetThreatManager().ClearAllThreat();
-        ClearComboPointHolders(false);                           // any combo points pointed to unit lost at it death
 
         if (IsNonMeleeSpellCast(false))
             InterruptNonMeleeSpells(false);
@@ -12534,8 +12533,9 @@ void Unit::CleanupBeforeRemoveFromMap(bool finalCleanup)
 
     m_Events.KillAllEvents(false);                      // non-delatable (currently casted spells) will not deleted now but it will deleted at call in Map::RemoveAllObjectsInRemoveList
     CombatStop();
-    ClearComboPoints();
+    ClearComboPoints(true);
     ClearComboPointHolders();
+    GetThreatManager().RemoveMeFromThreatLists();
     GetThreatManager().ClearAllThreat();
     GetMotionMaster()->Clear(false);                    // remove different non-standard movement generators.
 }
@@ -13503,15 +13503,20 @@ void Unit::AddComboPoints(Unit* target, int8 count)
 
         m_comboTarget = target;
         m_comboPoints = change;
-        
+
         target->AddComboPointHolder(this);
         SendComboPoints();
+
+        m_ComboPointDegenTimer = 0;
+
         return;
     }
 
     if (m_comboPoints != change)
     {
         m_comboPoints = change;
+
+        m_ComboPointDegenTimer = 0;
         SendComboPoints();
     }
 }
@@ -13595,7 +13600,7 @@ void Unit::ClearAllReactives()
     if (getClass() == CLASS_HUNTER && HasAuraState(AURA_STATE_HUNTER_PARRY))
         ModifyAuraState(AURA_STATE_HUNTER_PARRY, false);
     if (getClass() == CLASS_WARRIOR && GetTypeId() == TYPEID_PLAYER)
-        ClearComboPoints();
+        ClearComboPoints(true);
 }
 
 void Unit::UpdateReactives(uint32 p_time)
@@ -13624,12 +13629,12 @@ void Unit::UpdateReactives(uint32 p_time)
                 case REACTIVE_OVERPOWER:
                     if (getClass() == CLASS_WARRIOR)
                     {
-                        ClearComboPoints();
+                        ClearComboPoints(true);
                     }
                     break;
                 case REACTIVE_WOLVERINE_BITE:
                     if (IsHunterPet())
-                        ClearComboPoints();
+                        ClearComboPoints(true);
                     break;
                 default:
                     break;
@@ -14393,6 +14398,7 @@ void Unit::Kill(Unit* killer, Unit* victim, bool durabilityLoss, WeaponAttackTyp
 
         if (!creature->IsPet() && creature->GetLootMode() > 0)
         {
+            creature->GetThreatManager().RemoveMeFromThreatLists();
             creature->GetThreatManager().ClearAllThreat();
 
             // must be after setDeathState which resets dynamic flags

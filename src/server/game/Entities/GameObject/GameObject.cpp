@@ -294,24 +294,24 @@ bool GameObject::Create(ObjectGuid::LowType guidlow, uint32 name_id, Map* map, u
     {
         // excluded ids from the hackfix below
         // used switch since there should be more
-        case 181233: // maexxna portal effect
-        case 181575: // maexxna portal
-        case 20992: // theramore black shield
-        case 21042: // theramore guard badge
+    case 181233: // maexxna portal effect
+    case 181575: // maexxna portal
+    case 20992: // theramore black shield
+    case 21042: // theramore guard badge
+        SetLocalRotation(rotation);
+        break;
+    default:
+        // xinef: hackfix - but make it possible to use original WorldRotation (using special gameobject addon data)
+        // pussywizard: temporarily calculate WorldRotation from orientation, do so until values in db are correct
+        if (addon && addon->invisibilityType == INVISIBILITY_GENERAL && addon->InvisibilityValue == 0)
+        {
             SetLocalRotation(rotation);
-            break;
-        default:
-            // xinef: hackfix - but make it possible to use original WorldRotation (using special gameobject addon data)
-            // pussywizard: temporarily calculate WorldRotation from orientation, do so until values in db are correct
-            if (addon && addon->invisibilityType == INVISIBILITY_GENERAL && addon->InvisibilityValue == 0)
-            {
-                SetLocalRotation(rotation);
-            }
-            else
-            {
-                SetLocalRotationAngles(NormalizeOrientation(GetOrientation()), 0.0f, 0.0f);
-            }
-            break;
+        }
+        else
+        {
+            SetLocalRotationAngles(NormalizeOrientation(GetOrientation()), 0.0f, 0.0f);
+        }
+        break;
     }
 
     // pussywizard: no PathRotation for normal gameobjects
@@ -333,7 +333,29 @@ bool GameObject::Create(ObjectGuid::LowType guidlow, uint32 name_id, Map* map, u
     // GAMEOBJECT_BYTES_1, index at 0, 1, 2 and 3
     SetGoType(GameobjectTypes(goinfo->type));
 
-    SetGoState(go_state);
+    if (IsInstanceGameobject())
+    {
+        switch (GetStateSavedOnInstance())
+        {
+        case 0:
+            SetGoState(GO_STATE_READY);
+            SwitchDoorOrButton(true);
+            break;
+        case 1:
+            SetGoState(GO_STATE_READY);
+            break;
+        case 2:
+            SetGoState(GO_STATE_ACTIVE_ALTERNATIVE);
+            break;
+        default:
+            SetGoState(go_state);
+            break;
+        }
+    }
+    else
+    {
+        SetGoState(go_state);
+    }
 
     SetGoArtKit(artKit);
 
@@ -344,34 +366,34 @@ bool GameObject::Create(ObjectGuid::LowType guidlow, uint32 name_id, Map* map, u
 
     switch (goinfo->type)
     {
-        case GAMEOBJECT_TYPE_FISHINGHOLE:
-            SetGoAnimProgress(animprogress);
-            m_goValue.FishingHole.MaxOpens = urand(GetGOInfo()->fishinghole.minSuccessOpens, GetGOInfo()->fishinghole.maxSuccessOpens);
-            break;
-        case GAMEOBJECT_TYPE_DESTRUCTIBLE_BUILDING:
-            m_goValue.Building.Health = goinfo->building.intactNumHits + goinfo->building.damagedNumHits;
-            m_goValue.Building.MaxHealth = m_goValue.Building.Health;
-            SetGoAnimProgress(255);
-            break;
-        case GAMEOBJECT_TYPE_FISHINGNODE:
-            SetGoAnimProgress(0);
-            break;
-        case GAMEOBJECT_TYPE_TRAP:
-            if (GetGOInfo()->trap.stealthed)
-            {
-                m_stealth.AddFlag(STEALTH_TRAP);
-                m_stealth.AddValue(STEALTH_TRAP, 70);
-            }
+    case GAMEOBJECT_TYPE_FISHINGHOLE:
+        SetGoAnimProgress(animprogress);
+        m_goValue.FishingHole.MaxOpens = urand(GetGOInfo()->fishinghole.minSuccessOpens, GetGOInfo()->fishinghole.maxSuccessOpens);
+        break;
+    case GAMEOBJECT_TYPE_DESTRUCTIBLE_BUILDING:
+        m_goValue.Building.Health = goinfo->building.intactNumHits + goinfo->building.damagedNumHits;
+        m_goValue.Building.MaxHealth = m_goValue.Building.Health;
+        SetGoAnimProgress(255);
+        break;
+    case GAMEOBJECT_TYPE_FISHINGNODE:
+        SetGoAnimProgress(0);
+        break;
+    case GAMEOBJECT_TYPE_TRAP:
+        if (GetGOInfo()->trap.stealthed)
+        {
+            m_stealth.AddFlag(STEALTH_TRAP);
+            m_stealth.AddValue(STEALTH_TRAP, 70);
+        }
 
-            if (GetGOInfo()->trap.invisible)
-            {
-                m_invisibility.AddFlag(INVISIBILITY_TRAP);
-                m_invisibility.AddValue(INVISIBILITY_TRAP, 300);
-            }
-            break;
-        default:
-            SetGoAnimProgress(animprogress);
-            break;
+        if (GetGOInfo()->trap.invisible)
+        {
+            m_invisibility.AddFlag(INVISIBILITY_TRAP);
+            m_invisibility.AddValue(INVISIBILITY_TRAP, 300);
+        }
+        break;
+    default:
+        SetGoAnimProgress(animprogress);
+        break;
     }
 
     if (addon)
@@ -2477,7 +2499,38 @@ void GameObject::SetGoState(GOState state)
             EnableCollision(startOpen);
         else if (state == GO_STATE_READY)
             EnableCollision(!startOpen);*/
+        if (IsInstanceGameobject() && IsAbleToSaveOnDb())
+        {
+            // Save the gameobject state on the Database
+            if (!FindStateSavedOnInstance())
+            {
+                SaveInstanceData(GameobjectStateToInt(&state));
+            }
+            else
+            {
+                UpdateInstanceData(GameobjectStateToInt(&state));
+            }
+        }
     }
+}
+
+bool GameObject::IsInstanceGameobject()
+{
+    // Avoid checking for unecessary gameobjects whose
+    // states don't matter for the dungeon progression
+    if (!ValidateGameobjectType())
+    {
+        return false;
+    }
+
+    if (auto* map = FindMap())
+    {
+        if (map->IsDungeon() || map->IsRaid())
+        {
+            return true;
+        }
+    }
+    return false;
 }
 
 bool GameObject::ValidateGameobjectType()
@@ -2523,6 +2576,66 @@ uint8 GameObject::GameobjectStateToInt(GOState* state)
 bool GameObject::IsAbleToSaveOnDb()
 {
     return m_saveStateOnDb;
+}
+
+void GameObject::UpdateSaveToDb(bool enable)
+{
+    m_saveStateOnDb = enable;
+
+    if (enable)
+    {
+        SavingStateOnDB();
+    }
+}
+
+void GameObject::SavingStateOnDB()
+{
+    if (IsInstanceGameobject())
+    {
+        GOState param = GetGoState();
+        if (!FindStateSavedOnInstance())
+        {
+            SaveInstanceData(GameobjectStateToInt(&param));
+        }
+    }
+}
+
+void GameObject::SaveInstanceData(uint8 state)
+{
+    uint32 id = GetInstanceId();
+    uint32 guid = GetSpawnId();
+
+    CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_INSERT_INSTANCE_SAVED_DATA);
+    stmt->SetData(0, id);
+    stmt->SetData(1, guid);
+    stmt->SetData(2, state);
+    CharacterDatabase.Execute(stmt);
+
+    sObjectMgr->NewInstanceSavedGameobjectState(id, guid, state);
+}
+
+void GameObject::UpdateInstanceData(uint8 state)
+{
+    uint32 id = GetInstanceId();
+    uint32 guid = GetSpawnId();
+
+    CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_UPDATE_INSTANCE_SAVED_DATA);
+    stmt->SetData(0, state);
+    stmt->SetData(1, guid);
+    stmt->SetData(2, id);
+    CharacterDatabase.Execute(stmt);
+
+    sObjectMgr->SetInstanceSavedGameobjectState(id, guid, state);
+}
+
+uint8 GameObject::GetStateSavedOnInstance()
+{
+    return sObjectMgr->GetInstanceSavedGameobjectState(GetInstanceId(), GetSpawnId());
+}
+
+bool GameObject::FindStateSavedOnInstance()
+{
+    return sObjectMgr->FindInstanceSavedGameobjectState(GetInstanceId(), GetSpawnId());
 }
 
 void GameObject::SetDisplayId(uint32 displayid)
